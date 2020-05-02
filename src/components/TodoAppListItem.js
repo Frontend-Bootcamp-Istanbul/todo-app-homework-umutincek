@@ -1,19 +1,32 @@
 import React from 'react';
 import {connect} from "react-redux";
-import {toggleTodo} from "../redux/actions";
+import {toggleTodo,deleteTodo} from "../redux/actions";
+import { bindActionCreators } from 'redux';
 
-const TodoAppListItem = ({content, id, completed, toggleTodo}) => {
+
+
+const TodoAppListItem = ({content, id, completed,toggleTodo,todos}) => {
     return (
-        <div style={{
+        
+        <div key={id} style={{
             textDecoration: completed ? "line-through" : "initial"
-        }} onClick={() => toggleTodo(id)}>
-            {content}
+        }} >
+            {content} 
+            <button onClick={()=>deleteTodo(id)}>SİL</button>
         </div>
+        
     );
 };
 
-const mapDispatchToProps = {
-    toggleTodo: toggleTodo
-}
+const mapDispatchToProps = dispatch => {
+    return bindActionCreators(
+      {
+        deleteTodo,
+        toggleTodo
+      },
+      dispatch
+    );
+  };
 
-export default connect(null, mapDispatchToProps)(TodoAppListItem);
+
+export default connect(mapDispatchToProps)(TodoAppListItem);
